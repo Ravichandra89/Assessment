@@ -7,6 +7,8 @@ import profileModel from "../models/user.model";
 import eventModel from "../models/event.model";
 import apiResponse from "../utils/apiResponse";
 
+import redisClient from "../config/redis";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
