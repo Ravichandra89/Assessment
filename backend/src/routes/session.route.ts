@@ -5,10 +5,10 @@ import {
   getActiveProfiles,
 } from "../controllers/session.controller";
 
-const router = Router();
+const sessionRouter = Router();
 
 // Sessions (active profiles)
-router.post("/session", setActiveProfiles);
-router.get("/session", getActiveProfiles);
+sessionRouter.post("/session", setActiveProfiles);
+sessionRouter.get("/session", getActiveProfiles);
 
-export default router;
+export default sessionRouter;

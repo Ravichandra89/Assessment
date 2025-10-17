@@ -6,13 +6,27 @@ import {
   updateProfile,
   getProfileEvents,
 } from "../controllers/profile.controller";
+import { validateRequest } from "../middleware/validateRequest";
+import {
+  createProfileSchema,
+  updateProfileSchema,
+} from "../schema/profile.schema";
 
-const router = Router();
+const profileRouter = Router();
 
-router.post("/profiles", createProfile);
-router.get("/profiles", getAllProfiles);
-router.get("/profiles/:profileId", getProfileById);
-router.put("/profiles/:profileId", updateProfile);
-router.get("/profiles/:profileId/events", getProfileEvents);
+profileRouter.post(
+  "/profiles",
+  validateRequest(createProfileSchema),
+  createProfile
+);
+profileRouter.put(
+  "/profiles/:profileId",
+  validateRequest(updateProfileSchema),
+  updateProfile
+);
 
-export default router;
+profileRouter.get("/profiles", getAllProfiles);
+profileRouter.get("/profiles/:profileId", getProfileById);
+profileRouter.get("/profiles/:profileId/events", getProfileEvents);
+
+export default profileRouter;

@@ -7,12 +7,26 @@ import {
   convertToTimezone,
 } from "../controllers/timezone.controller";
 
-const router = Router();
+import { validateRequest } from "../middleware/validateRequest";
+import {
+  updateUserTimezoneSchema,
+  convertTimezoneSchema,
+} from "../schema/timezone.schema";
+
+const timezoneRouter = Router();
 
 // Timezone utilities
-router.get("/timezones", getSupportedTimezones);
-router.get("/timezone/:userId", getUserTimezone);
-router.patch("/timezone/:userId", updateUserTimezone);
-router.post("/timezone/convert", convertToTimezone);
+timezoneRouter.get("/timezones", getSupportedTimezones);
+timezoneRouter.get("/timezone/:userId", getUserTimezone);
+timezoneRouter.patch(
+  "/timezone/:userId",
+  validateRequest(updateUserTimezoneSchema),
+  updateUserTimezone
+);
+timezoneRouter.post(
+  "/timezone/convert",
+  validateRequest(convertTimezoneSchema),
+  convertToTimezone
+);
 
-export default router;
+export default timezoneRouter;
