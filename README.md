@@ -1,4 +1,4 @@
-## ## Introduction
+## Introduction
 
 The **Event Management System** is a web-based platform designed to streamline the process of creating, managing, and tracking events. It enables organizations and teams to efficiently schedule events, assign them to multiple profiles, and handle timezones seamlessly.
 
@@ -178,4 +178,7 @@ Follow these steps to run the Event Management System locally on your machine.
 ### 4. Updating Event layout
 
 ![Updated Event](./updateEvent.png)
+
+### 5. Backend server started
+![Backend Server](./BackendServer.png)
 
