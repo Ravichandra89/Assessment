@@ -1,73 +1,28 @@
-# React + TypeScript + Vite
+## Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend of the Event Management System is built using **React** and **TypeScript** with modern UI libraries and state management tools. It provides an interactive interface for creating events, managing profiles, and viewing scheduled events with proper timezone support.
 
-Currently, two official plugins are available:
+---
+### Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive and intuitive UI for event creation and management
+- Profile selection and creation with dynamic popovers
+- Event scheduling with date, time, and timezone support
+- Integration with backend APIs for real-time data
+- Reusable components for buttons, inputs, selects, popovers, and cards
+- Styled using **TailwindCSS** and **Lucide icons** for visuals
+- State management handled with **Redux Toolkit**
 
-## React Compiler
+---
+### Technology Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19**: Frontend library
+- **TypeScript**: Strongly typed JavaScript
+- **TailwindCSS**: Utility-first CSS framework
+- **Redux Toolkit**: State management
+- **Vite**: Fast development build tool
+- **Lucide Icons**: Icon library
+- **Dayjs**: Date and time handling with timezone support
+- **React-Day-Picker**: Calendar component
+- **Sonner**: Toast notifications
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
