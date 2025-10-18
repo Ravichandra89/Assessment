@@ -1,0 +1,356 @@
+openapi: 3.0.2
+info:
+  title: Event Management System API
+  version: 1.0.0
+  description: |
+    REST API documentation for the Event Management System. This API allows managing events, profiles, and related operations.
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local development server
+
+tags:
+  - name: Profiles
+    description: Operations related to user profiles
+  - name: Events
+    description: Operations related to events
+
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "64f1234abc56789ef0123456"
+        name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          example: "john@example.com"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Event:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "64f5678abc90123def456789"
+        profileIds:
+          type: array
+          items:
+            type: string
+          example: ["64f1234abc56789ef0123456"]
+        timezone:
+          type: string
+          example: "Asia/Kolkata"
+        startDate:
+          type: string
+          format: date
+          example: "2025-10-20"
+        startTime:
+          type: string
+          example: "09:00"
+        endDate:
+          type: string
+          format: date
+          example: "2025-10-20"
+        endTime:
+          type: string
+          example: "10:00"
+        createdBy:
+          type: string
+          example: "admin"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+        message:
+          type: string
+          example: "Operation successful"
+
+paths:
+  /profiles:
+    get:
+      tags:
+        - Profiles
+      summary: Get all profiles
+      responses:
+        "200":
+          description: List of profiles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Profile"
+
+    post:
+      tags:
+        - Profiles
+      summary: Create a new profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Jane Doe"
+      responses:
+        "201":
+          description: Profile created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+  /profiles/{profileId}:
+    get:
+      tags:
+        - Profiles
+      summary: Get a specific profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Profile data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+
+    put:
+      tags:
+        - Profiles
+      summary: Update a profile completely
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+    patch:
+      tags:
+        - Profiles
+      summary: Update a profile partially
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: Profile updated partially
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+    delete:
+      tags:
+        - Profiles
+      summary: Delete a profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Profile deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+  /events:
+    get:
+      tags:
+        - Events
+      summary: Get all events
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+    post:
+      tags:
+        - Events
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profileIds:
+                  type: array
+                  items:
+                    type: string
+                  example: ["64f1234abc56789ef0123456"]
+                timezone:
+                  type: string
+                  example: "Asia/Kolkata"
+                startDate:
+                  type: string
+                  format: date
+                  example: "2025-10-20"
+                startTime:
+                  type: string
+                  example: "09:00"
+                endDate:
+                  type: string
+                  format: date
+                  example: "2025-10-20"
+                endTime:
+                  type: string
+                  example: "10:00"
+      responses:
+        "201":
+          description: Event created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+  /events/{eventId}:
+    get:
+      tags:
+        - Events
+      summary: Get a specific event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+    put:
+      tags:
+        - Events
+      summary: Update an event completely
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: Event updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+    patch:
+      tags:
+        - Events
+      summary: Update an event partially
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: Event updated partially
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+
+    delete:
+      tags:
+        - Events
+      summary: Delete an event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
