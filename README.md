@@ -9,7 +9,7 @@ With a responsive and user-friendly interface, the system simplifies event manag
 - Supporting timezone-aware scheduling for global teams.
 - Tracking event history and status for better management and reporting.
 
-## This project is ideal for organizations, teams, or individuals who need a structured and scalable way to manage events across different time zones while keeping the process intuitive and accessible.
+This project is ideal for organizations, teams, or individuals who need a structured and scalable way to manage events across different time zones while keeping the process intuitive and accessible.
 
 ###
 
