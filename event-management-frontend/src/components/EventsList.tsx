@@ -48,7 +48,7 @@ export const EventsList = () => {
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Events</CardTitle>
-        <div className="space-y-2 pt-4">
+        <div className="space-y-2 pt-4 bg-white">
           <Label>View in Timezone</Label>
           <Select value={viewTimezone} onValueChange={setViewTimezone}>
             <SelectTrigger>

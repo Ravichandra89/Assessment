@@ -245,7 +245,7 @@ export const CreateEventForm = () => {
         {/* End Date & Time */}
         <div className="space-y-2">
           <Label>End Date & Time</Label>
-          <div className="flex gap-2">
+          <div className="flex gap-2 ">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -255,7 +255,7 @@ export const CreateEventForm = () => {
                     !endDate && "text-muted-foreground"
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="mr-2 h-4 w-4 bg-white" />
                   {endDate ? format(endDate, "PPP") : "Pick a date"}
                 </Button>
               </PopoverTrigger>
@@ -265,7 +265,7 @@ export const CreateEventForm = () => {
                   selected={endDate}
                   onSelect={setEndDate}
                   initialFocus
-                  className="pointer-events-auto"
+                  className="pointer-events-auto bg-white"
                 />
               </PopoverContent>
             </Popover>
