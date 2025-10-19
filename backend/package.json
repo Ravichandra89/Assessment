@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts"
@@ -14,6 +17,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@types/sinon": "^17.0.4",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.18",
@@ -21,6 +25,7 @@
     "express": "^5.1.0",
     "mongoose": "^8.19.1",
     "morgan": "^1.10.1",
+    "parse-json": "^8.3.0",
     "redis": "^5.8.3",
     "zod": "^4.1.12"
   },
@@ -30,7 +35,10 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.8.1",
     "@types/redis": "^4.0.10",
+    "sinon": "^21.0.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

@@ -16,12 +16,12 @@ const profileRouter = Router();
 
 profileRouter.post(
   "/profiles",
-  validateRequest(createProfileSchema),
+  // validateRequest(createProfileSchema),
   createProfile
 );
 profileRouter.put(
   "/profiles/:profileId",
-  validateRequest(updateProfileSchema),
+  // validateRequest(updateProfileSchema),
   updateProfile
 );
 

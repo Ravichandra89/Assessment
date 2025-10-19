@@ -7,6 +7,8 @@ import profileModel from "../models/user.model";
 import apiResponse from "../utils/apiResponse";
 import eventLogModel from "../models/eventlogs.model";
 
+import { Types } from "mongoose";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -33,14 +35,22 @@ export const createEvent = async (
       return apiResponse(res, 400, false, "Missing required fields");
     }
 
+    // Convert profiles to ObjectId
+    const profileIds = Array.isArray(profiles)
+      ? profiles.map((id: string) => new Types.ObjectId(id))
+      : [];
+
+    // Convert createdBy to ObjectId if provided
+    const creatorId = createdBy ? new Types.ObjectId(createdBy) : undefined;
+
     const event = await eventModel.create({
       title,
       description,
       startUtc,
       endUtc,
-      createdBy,
+      createdBy: creatorId,
       timezone: tz || "UTC",
-      profiles: profiles || [],
+      profiles: profileIds,
     });
 
     apiResponse(res, 201, true, "Event created successfully", event);
@@ -113,7 +123,7 @@ export const updateEvent = async (
   try {
     const { eventId } = req.params;
     const updateData = req.body;
-    const { updatedBy } = req.body; 
+    const { updatedBy } = req.body;
 
     // 1. Fetch the current event
     const existingEvent = await eventModel.findById(eventId);

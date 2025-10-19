@@ -17,12 +17,12 @@ import { createEventSchema, updateEventSchema } from "../schema/event.schema";
 const eventRouter = Router();
 
 // Event CRUD
-eventRouter.post("/events", validateRequest(createEventSchema), createEvent);
+eventRouter.post("/events", createEvent);
 eventRouter.get("/events", getAllEvents);
 eventRouter.get("/events/:eventId", getEventById);
 eventRouter.put(
   "/events/:eventId",
-  validateRequest(updateEventSchema),
+  // validateRequest(updateEventSchema),
   updateEvent
 );
 eventRouter.patch("/events/:eventId", patchEvent);

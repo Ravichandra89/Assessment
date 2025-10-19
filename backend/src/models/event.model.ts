@@ -65,7 +65,7 @@ eventSchema.pre<Event>("save", function (next) {
 });
 
 // event model export
-const eventModel =
+export const eventModel =
   mongoose.models.Event || mongoose.model<Event>("Event", eventSchema);
 
 export default eventModel;
