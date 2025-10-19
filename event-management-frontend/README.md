@@ -26,3 +26,7 @@ The frontend of the Event Management System is built using **React** and **TypeS
 - **React-Day-Picker**: Calendar component
 - **Sonner**: Toast notifications
 
+
+
+npm install --include=dev
+VITE_API_BASE_URL=https://3b04151a5aeb64fa6212a45ad9fce5c5.serveo.net/api/v1
