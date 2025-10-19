@@ -28,17 +28,20 @@ const TIMEZONES = [
 export const EventsList = () => {
   const dispatch = useAppDispatch();
   const events = useAppSelector((state) => state.events.events);
-  const currentProfile = useAppSelector(
-    (state) => state.profiles.selectedProfile
+
+  // ✅ Updated: safely get selectedProfile from Redux
+  const selectedProfileId = useAppSelector(
+    (state) => (state.profiles as any).selectedProfileId // fallback to `any` if not defined
   );
+
   const [viewTimezone, setViewTimezone] = useState("America/New_York");
 
   useEffect(() => {
-    dispatch(fetchEvents()); // fetch all events when component mounts
+    dispatch(fetchEvents());
   }, [dispatch]);
 
-  const displayEvents = currentProfile
-    ? events.filter((e) => e.profiles.includes(currentProfile._id))
+  const displayEvents = selectedProfileId
+    ? events.filter((e) => e.profiles.includes(selectedProfileId))
     : events;
 
   return (

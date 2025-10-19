@@ -1,4 +1,3 @@
-// src/api/profile.api.ts
 import axiosClient from "./axiosClient";
 import { AxiosError } from "axios";
 
@@ -15,8 +14,10 @@ export interface Event {
   title: string;
   description?: string;
   timezone: string;
-  startDateTime: string;
-  endDateTime: string;
+  startDateTime?: string; // optional, depends on mapping
+  endDateTime?: string;
+  start?: string; // backend returns "start" and "end" instead of "startUtc"
+  end?: string;
   profiles?: Profile[];
   createdBy?: Profile;
   createdAt?: string;
@@ -29,26 +30,31 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+/** Response shape for /profiles/:id/events */
+export interface ProfileEventsResponse {
+  profile: Profile;
+  events: Event[];
+}
+
 /**
- * Error Handling Utility 
+ * Error Handling Utility
  */
 function handleAxiosError(context: string, error: unknown): never {
   if (error instanceof AxiosError) {
     console.error(
-      `❌ Error ${context}:`,
+      `Error ${context}:`,
       error.response?.data || error.message
     );
   } else if (error instanceof Error) {
-    console.error(`❌ Unexpected error ${context}:`, error.message);
+    console.error(`Unexpected error ${context}:`, error.message);
   } else {
-    console.error(`❌ Unknown error ${context}:`, error);
+    console.error(`Unknown error ${context}:`, error);
   }
   throw error;
 }
 
-// Profile API
 const ProfileAPI = {
-  /** Create a new profile */
+  /** ➕ Create a new profile */
   createProfile: async (
     name: string,
     timezone: string
@@ -59,34 +65,34 @@ const ProfileAPI = {
         timezone,
       });
       return res.data;
-    } catch (error: unknown) {
+    } catch (error) {
       handleAxiosError("creating profile", error);
     }
   },
 
-  /** Get all profiles */
+  /** 📄 Get all profiles */
   getAllProfiles: async (): Promise<ApiResponse<Profile[]>> => {
     try {
       const res = await axiosClient.get<ApiResponse<Profile[]>>("/profiles");
       return res.data;
-    } catch (error: unknown) {
+    } catch (error) {
       handleAxiosError("fetching profiles", error);
     }
   },
 
-  /** Get profile by ID */
+  /** 🔍 Get single profile by ID */
   getProfileById: async (profileId: string): Promise<ApiResponse<Profile>> => {
     try {
       const res = await axiosClient.get<ApiResponse<Profile>>(
         `/profiles/${profileId}`
       );
       return res.data;
-    } catch (error: unknown) {
+    } catch (error) {
       handleAxiosError("fetching profile by ID", error);
     }
   },
 
-  /** Update profile details */
+  /** ✏️ Update profile details */
   updateProfile: async (
     profileId: string,
     payload: Partial<Pick<Profile, "name" | "timezone">>
@@ -97,21 +103,21 @@ const ProfileAPI = {
         payload
       );
       return res.data;
-    } catch (error: unknown) {
+    } catch (error) {
       handleAxiosError("updating profile", error);
     }
   },
 
-  /** Get all events associated with a profile */
+  /** 📅 Get all events associated with a profile */
   getProfileEvents: async (
     profileId: string
-  ): Promise<ApiResponse<Event[]>> => {
+  ): Promise<ApiResponse<ProfileEventsResponse>> => {
     try {
-      const res = await axiosClient.get<ApiResponse<Event[]>>(
+      const res = await axiosClient.get<ApiResponse<ProfileEventsResponse>>(
         `/profiles/${profileId}/events`
       );
       return res.data;
-    } catch (error: unknown) {
+    } catch (error) {
       handleAxiosError("fetching profile events", error);
     }
   },

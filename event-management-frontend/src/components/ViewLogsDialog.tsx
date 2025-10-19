@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchEventLogs } from "../features/event/eventThunk";
-import type { Event } from "../types/event";
+import type { Event, EventLog } from "../types/event";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Card, CardContent } from "./ui/card";
 import { Clock } from "lucide-react";
@@ -11,15 +11,6 @@ import timezone from "dayjs/plugin/timezone";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-interface EventLog {
-  _id: string;
-  timestampUtc: string;
-  field?: string;
-  eventId: string;
-  before: unknown;
-  after: unknown;
-}
 
 interface ViewLogsDialogProps {
   event: Event;
@@ -41,7 +32,7 @@ export const ViewLogsDialog = ({
     (state) => state.events.eventLogs?.[event._id] || []
   );
 
-  // Fetch logs on open
+  // Fetch logs when dialog opens
   useEffect(() => {
     if (open) {
       dispatch(fetchEventLogs(event._id));

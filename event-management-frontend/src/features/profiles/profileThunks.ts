@@ -1,7 +1,6 @@
-// src/features/profile/profileThunk.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import ProfileAPI from "../../api/profile.api";
-import type { Event, Profile } from "../../api/profile.api";
+import type { Event, Profile, ApiResponse } from "../../api/profile.api";
 
 // -------------------------------
 // Fetch all profiles
@@ -12,7 +11,7 @@ export const fetchProfiles = createAsyncThunk<
   { rejectValue: string }
 >("profiles/fetchAll", async (_, { rejectWithValue }) => {
   try {
-    const res = await ProfileAPI.getAllProfiles();
+    const res: ApiResponse<Profile[]> = await ProfileAPI.getAllProfiles();
     return res.data;
   } catch (err) {
     return rejectWithValue(
@@ -30,7 +29,10 @@ export const createProfile = createAsyncThunk<
   { rejectValue: string }
 >("profiles/create", async ({ name, timezone }, { rejectWithValue }) => {
   try {
-    const res = await ProfileAPI.createProfile(name, timezone);
+    const res: ApiResponse<Profile> = await ProfileAPI.createProfile(
+      name,
+      timezone
+    );
     return res.data;
   } catch (err) {
     return rejectWithValue(
@@ -40,7 +42,7 @@ export const createProfile = createAsyncThunk<
 });
 
 // -------------------------------
-// Update a profile
+// Update an existing profile
 // -------------------------------
 export const updateProfile = createAsyncThunk<
   Profile,
@@ -48,7 +50,10 @@ export const updateProfile = createAsyncThunk<
   { rejectValue: string }
 >("profiles/update", async ({ id, payload }, { rejectWithValue }) => {
   try {
-    const res = await ProfileAPI.updateProfile(id, payload);
+    const res: ApiResponse<Profile> = await ProfileAPI.updateProfile(
+      id,
+      payload
+    );
     return res.data;
   } catch (err) {
     return rejectWithValue(
@@ -58,16 +63,21 @@ export const updateProfile = createAsyncThunk<
 });
 
 // -------------------------------
-// Fetch events for a specific profile
+// Fetch events linked to a specific profile
 // -------------------------------
+interface ProfileEventsResponse {
+  events: Event[];
+}
+
 export const fetchProfileEvents = createAsyncThunk<
   Event[],
   string,
   { rejectValue: string }
 >("profiles/fetchEvents", async (profileId, { rejectWithValue }) => {
   try {
-    const res = await ProfileAPI.getProfileEvents(profileId);
-    return res.data;
+    const res: ApiResponse<ProfileEventsResponse> =
+      await ProfileAPI.getProfileEvents(profileId);
+    return res.data.events;
   } catch (err) {
     return rejectWithValue(
       err instanceof Error ? err.message : "Failed to fetch profile events"

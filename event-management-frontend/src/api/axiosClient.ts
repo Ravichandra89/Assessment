@@ -8,17 +8,6 @@ const axiosClient = axios.create({
   timeout: 10000, // 10s timeout
 });
 
-// Optional: Add interceptors for logging or auth -- OPTIONAL
-axiosClient.interceptors.request.use(
-  (config) => {
-    // Example: if token added later
-    // const token = localStorage.getItem("token");
-    // if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 axiosClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {

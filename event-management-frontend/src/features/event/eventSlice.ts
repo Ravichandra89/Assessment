@@ -1,11 +1,10 @@
-// src/features/event/eventSlice.ts
 import {
   createSlice,
   type PayloadAction,
   isPending,
   isRejected,
 } from "@reduxjs/toolkit";
-import type { Event, EventLog } from "../../api/event.api";
+import type { Event, EventLog } from "../../types/event";
 import {
   fetchEvents,
   createEvent,
@@ -25,7 +24,7 @@ interface EventState {
 const initialState: EventState = {
   events: [],
   selectedEvent: null,
-  eventLogs: {}, // initialize empty
+  eventLogs: {},
   loading: false,
   error: null,
 };
@@ -43,7 +42,6 @@ const eventSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fulfilled cases
       .addCase(fetchEvents.fulfilled, (state, action) => {
         state.loading = false;
         state.events = action.payload;
@@ -61,14 +59,11 @@ const eventSlice = createSlice({
         state.loading = false;
         state.events = state.events.filter((e) => e._id !== action.payload);
       })
-      // NEW: Fetch event logs fulfilled
       .addCase(fetchEventLogs.fulfilled, (state, action) => {
         state.loading = false;
         const eventId = action.meta.arg;
         state.eventLogs[eventId] = action.payload;
       })
-
-      // Matchers for pending/rejected
       .addMatcher(isPending, (state) => {
         state.loading = true;
         state.error = null;

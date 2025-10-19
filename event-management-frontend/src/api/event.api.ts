@@ -1,8 +1,6 @@
+// src/api/event.api.ts
 import axiosClient from "./axiosClient";
-
-// -------------------------------
-// Interfaces
-// -------------------------------
+import { AxiosError } from "axios";
 
 export interface Event {
   _id: string;
@@ -34,8 +32,25 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+/**
+ * Error Handling Utility
+ */
+function handleAxiosError(context: string, error: unknown): never {
+  if (error instanceof AxiosError) {
+    console.error(
+      `❌ Error ${context}:`,
+      error.response?.data || error.message
+    );
+  } else if (error instanceof Error) {
+    console.error(`❌ Unexpected error ${context}:`, error.message);
+  } else {
+    console.error(`❌ Unknown error ${context}:`, error);
+  }
+  throw error;
+}
+
 const EventAPI = {
-  /** Create a new event */
+  /** ➕ Create a new event */
   createEvent: async (
     payload: Omit<Event, "_id" | "created_at" | "updated_at" | "createdBy">
   ): Promise<ApiResponse<Event>> => {
@@ -46,23 +61,21 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error creating event:", error);
-      throw error;
+      handleAxiosError("creating event", error);
     }
   },
 
-  /** Fetch all events */
+  /** 📄 Fetch all events */
   getAllEvents: async (): Promise<ApiResponse<Event[]>> => {
     try {
       const res = await axiosClient.get<ApiResponse<Event[]>>("/events");
       return res.data;
     } catch (error) {
-      console.error("Error fetching events:", error);
-      throw error;
+      handleAxiosError("fetching events", error);
     }
   },
 
-  /** Fetch event by ID */
+  /** 🔍 Fetch event by ID */
   getEventById: async (eventId: string): Promise<ApiResponse<Event>> => {
     try {
       const res = await axiosClient.get<ApiResponse<Event>>(
@@ -70,12 +83,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error fetching event:", error);
-      throw error;
+      handleAxiosError("fetching event by ID", error);
     }
   },
 
-  /** Update event (PUT) */
+  /** ✏️ Update event (PUT) */
   updateEvent: async (
     eventId: string,
     payload: Partial<Event>
@@ -87,12 +99,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error updating event:", error);
-      throw error;
+      handleAxiosError("updating event", error);
     }
   },
 
-  /** Patch event (Partial Update) */
+  /** 🩹 Partially update event (PATCH) */
   patchEvent: async (
     eventId: string,
     payload: Partial<Event>
@@ -104,12 +115,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error partially updating event:", error);
-      throw error;
+      handleAxiosError("patching event", error);
     }
   },
 
-  /** Delete event */
+  /** ❌ Delete event */
   deleteEvent: async (eventId: string): Promise<ApiResponse<null>> => {
     try {
       const res = await axiosClient.delete<ApiResponse<null>>(
@@ -117,12 +127,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error deleting event:", error);
-      throw error;
+      handleAxiosError("deleting event", error);
     }
   },
 
-  /** Assign profiles to an event */
+  /** 👥 Assign profiles to event */
   assignProfiles: async (
     eventId: string,
     profiles: string[]
@@ -134,12 +143,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error assigning profiles:", error);
-      throw error;
+      handleAxiosError("assigning profiles", error);
     }
   },
 
-  /** Unassign profile from event */
+  /** 🧹 Unassign profile from event */
   unassignProfile: async (
     eventId: string,
     profileId: string
@@ -150,12 +158,11 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error unassigning profile:", error);
-      throw error;
+      handleAxiosError("unassigning profile", error);
     }
   },
 
-  /** Fetch event logs */
+  /** 🪵 Fetch event logs */
   getEventLogs: async (eventId: string): Promise<ApiResponse<EventLog[]>> => {
     try {
       const res = await axiosClient.get<ApiResponse<EventLog[]>>(
@@ -163,8 +170,7 @@ const EventAPI = {
       );
       return res.data;
     } catch (error) {
-      console.error("Error fetching event logs:", error);
-      throw error;
+      handleAxiosError("fetching event logs", error);
     }
   },
 };

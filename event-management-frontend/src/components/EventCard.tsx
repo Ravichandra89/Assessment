@@ -7,7 +7,6 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Calendar, Clock, Users, Edit, FileText } from "lucide-react";
 import { EditEventDialog } from "./EditEventDialog";
-
 import { ViewLogsDialog } from "./ViewLogsDialog";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -26,20 +25,15 @@ export const EventCard = ({ event, viewTimezone }: EventCardProps) => {
   const [editOpen, setEditOpen] = useState(false);
   const [logsOpen, setLogsOpen] = useState(false);
 
-  // Map profile IDs to profile names
   const eventProfiles = profiles.filter((p) => event.profiles.includes(p._id));
   const profileNames = eventProfiles.map((p) => p.name).join(", ");
 
-  const startDateTime = dayjs
-    .tz(event.startUtc, event.eventTimezone)
-    .tz(viewTimezone);
+  const startDateTime = dayjs.tz(event.startUtc, event.eventTimezone).tz(viewTimezone);
+  const endDateTime = dayjs.tz(event.endUtc, event.eventTimezone).tz(viewTimezone);
 
-  const endDateTime = dayjs
-    .tz(event.endUtc, event.eventTimezone)
-    .tz(viewTimezone);
-
-  const createdAt = dayjs(event.created_at).tz(viewTimezone);
-  const updatedAt = dayjs(event.updated_at).tz(viewTimezone);
+  // ✅ Use camelCase
+  const createdAt = dayjs(event.createdAt).tz(viewTimezone);
+  const updatedAt = dayjs(event.updatedAt).tz(viewTimezone);
 
   return (
     <>
@@ -80,12 +74,10 @@ export const EventCard = ({ event, viewTimezone }: EventCardProps) => {
 
           <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t">
             <div>
-              Created: {createdAt.format("MMM D, YYYY")} at{" "}
-              {createdAt.format("h:mm A")}
+              Created: {createdAt.format("MMM D, YYYY")} at {createdAt.format("h:mm A")}
             </div>
             <div>
-              Updated: {updatedAt.format("MMM D, YYYY")} at{" "}
-              {updatedAt.format("h:mm A")}
+              Updated: {updatedAt.format("MMM D, YYYY")} at {updatedAt.format("h:mm A")}
             </div>
           </div>
 
@@ -112,11 +104,7 @@ export const EventCard = ({ event, viewTimezone }: EventCardProps) => {
         </CardContent>
       </Card>
 
-      <EditEventDialog
-        event={event}
-        open={editOpen}
-        onOpenChange={setEditOpen}
-      />
+      <EditEventDialog event={event} open={editOpen} onOpenChange={setEditOpen} />
       <ViewLogsDialog
         event={event}
         open={logsOpen}
